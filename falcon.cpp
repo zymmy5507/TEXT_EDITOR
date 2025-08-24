@@ -47,7 +47,9 @@ int check_save() {
         return !changed;
     }
     return (r == 2) ? 1 : 0;
-}#include <FL/Fl.H>
+
+}
+#include <FL/Fl.H>
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Menu_Bar.H>
 #include <FL/Fl_Text_Editor.H>
@@ -128,6 +130,17 @@ void open_cb(Fl_Widget *, void *) {
         loading = 0;
         set_title(main_win);
     }
+}
+
+void undo_cb(Fl_Widget *, void *) {
+    textbuf->undo();
+    changed = 1;
+    status_bar->label("Undo");
+    set_title(main_win);
+}
+
+void redo_cb(Fl_Widget *, void *) {
+    fl_alert("Redo not implemented.");
 }
 
 void save_cb(Fl_Widget *, void *) {
@@ -311,6 +324,8 @@ int main(int argc, char **argv) {
     menubar->add("File/Save", FL_CTRL + 's', save_cb);
     menubar->add("File/Save As...", FL_CTRL + FL_SHIFT + 's', saveas_cb);
 
+    menubar->add("Edit/Undo", FL_CTRL + 'z', undo_cb);
+    menubar->add("Edit/Redo", FL_CTRL + 'y', redo_cb);  // Not implemented
     menubar->add("Edit/Cut", FL_CTRL + 'x', cut_cb);
     menubar->add("Edit/Copy", FL_CTRL + 'c', copy_cb);
     menubar->add("Edit/Paste", FL_CTRL + 'v', paste_cb);
@@ -334,65 +349,6 @@ int main(int argc, char **argv) {
     set_title(main_win);
 
     return Fl::run();
-}
-
-
-void new_cb(Fl_Widget *, void *) {
-    if (!check_save()) return;
-
-    filename[0] = '\0';
-    textbuf->select(0, textbuf->length());
-    textbuf->remove_selection();
-    changed = 0;
-    set_title(main_win);
-    status_bar->label("New file created");
-}
-
-void open_cb(Fl_Widget *, void *) {
-    if (!check_save()) return;
-
-    const char *newfile = fl_file_chooser("Open File", "*", filename);
-    if (newfile) {
-        loading = 1;
-        if (textbuf->loadfile(newfile) == 0) {
-            strcpy(filename, newfile);
-            changed = 0;
-            status_bar->label("File opened");
-        } else {
-            fl_alert("Error reading from file '%s':\n%s.", newfile, strerror(errno));
-        }
-        loading = 0;
-        set_title(main_win);
-    }
-}
-
-void save_cb(Fl_Widget *, void *) {
-    if (filename[0] == '\0') {
-        saveas_cb(nullptr, nullptr);
-        return;
-    }
-
-    if (textbuf->savefile(filename) == 0) {
-        changed = 0;
-        set_title(main_win);
-        status_bar->label("File saved");
-    } else {
-        fl_alert("Error writing to file '%s':\n%s.", filename, strerror(errno));
-    }
-}
-
-void saveas_cb(Fl_Widget *, void *) {
-    const char *newfile = fl_file_chooser("Save File As?", "*", filename);
-    if (newfile) {
-        if (textbuf->savefile(newfile) == 0) {
-            strcpy(filename, newfile);
-            changed = 0;
-            set_title(main_win);
-            status_bar->label("File saved");
-        } else {
-            fl_alert("Error writing to file '%s':\n%s.", newfile, strerror(errno));
-        }
-    }
 }
 
 void changed_cb(int, int nInserted, int nDeleted, int, const char *, void *) {
