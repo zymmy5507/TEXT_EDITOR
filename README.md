@@ -30,7 +30,7 @@ A lightweight, cross-platform text editor built with FLTK (Fast Light Toolkit) a
 ## 📸 Screenshots
 
 ### Light Mode
-![Light Mode Interface](screenshots/light_mode.png)
+![Light Mode Interface](https://raw.githubusercontent.com/zymmy5507/TEXT_EDITOR/main/assets/text-editor-screenshot.png)
 
 ### Dark Mode
 ![Dark Mode Interface](screenshots/dark_mode.png)
