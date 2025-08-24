@@ -12,6 +12,7 @@
 
 // Global variables
 Fl_Double_Window *main_win = nullptr;
+Fl_Text_Editor *editor = nullptr;
 Fl_Text_Buffer *textbuf = nullptr;
 Fl_Box *status_bar = nullptr;
 
@@ -19,7 +20,7 @@ int changed = 0;
 int loading = 0;
 char filename[256] = "";
 
-// Helper: Set window title
+// --- File Menu Functions ---
 void set_title(Fl_Window *w) {
     if (!w) return;
     static char title[512];
@@ -36,7 +37,6 @@ void set_title(Fl_Window *w) {
     w->label(title);
 }
 
-// Check if user wants to save unsaved changes
 int check_save() {
     if (!changed) return 1;
 
@@ -49,7 +49,6 @@ int check_save() {
     return (r == 2) ? 1 : 0;
 }
 
-// File > New
 void new_cb(Fl_Widget *, void *) {
     if (!check_save()) return;
 
@@ -61,7 +60,6 @@ void new_cb(Fl_Widget *, void *) {
     status_bar->label("New file created");
 }
 
-// File > Open
 void open_cb(Fl_Widget *, void *) {
     if (!check_save()) return;
 
@@ -71,7 +69,7 @@ void open_cb(Fl_Widget *, void *) {
         if (textbuf->loadfile(newfile) == 0) {
             strcpy(filename, newfile);
             changed = 0;
-            status_bar->label("File opened successfully");
+            status_bar->label("File opened");
         } else {
             fl_alert("Error reading from file '%s':\n%s.", newfile, strerror(errno));
         }
@@ -80,7 +78,6 @@ void open_cb(Fl_Widget *, void *) {
     }
 }
 
-// File > Save
 void save_cb(Fl_Widget *, void *) {
     if (filename[0] == '\0') {
         saveas_cb(nullptr, nullptr);
@@ -96,7 +93,6 @@ void save_cb(Fl_Widget *, void *) {
     }
 }
 
-// File > Save As
 void saveas_cb(Fl_Widget *, void *) {
     const char *newfile = fl_file_chooser("Save File As?", "*", filename);
     if (newfile) {
@@ -111,7 +107,6 @@ void saveas_cb(Fl_Widget *, void *) {
     }
 }
 
-// Callback to track changes
 void changed_cb(int, int nInserted, int nDeleted, int, const char *, void *) {
     if ((nInserted || nDeleted) && !loading) {
         changed = 1;
@@ -120,25 +115,48 @@ void changed_cb(int, int nInserted, int nDeleted, int, const char *, void *) {
     }
 }
 
+// --- Edit Menu Functions ---
+void cut_cb(Fl_Widget *, void *) {
+    Fl_Text_Editor::kf_cut(0, editor);
+    changed = 1;
+    status_bar->label("Cut");
+    set_title(main_win);
+}
+
+void copy_cb(Fl_Widget *, void *) {
+    Fl_Text_Editor::kf_copy(0, editor);
+    status_bar->label("Copied");
+}
+
+void paste_cb(Fl_Widget *, void *) {
+    Fl_Text_Editor::kf_paste(0, editor);
+    changed = 1;
+    status_bar->label("Pasted");
+    set_title(main_win);
+}
+
 int main(int argc, char **argv) {
-    // Create the main window
     main_win = new Fl_Double_Window(1000, 700, "Simple Editor");
     main_win->begin();
 
-    // Menu bar
+    // Menu Bar
     Fl_Menu_Bar *menubar = new Fl_Menu_Bar(0, 0, 1000, 25);
     menubar->add("File/New",        FL_CTRL + 'n', new_cb);
     menubar->add("File/Open...",    FL_CTRL + 'o', open_cb);
     menubar->add("File/Save",       FL_CTRL + 's', save_cb);
     menubar->add("File/Save As...", FL_CTRL + FL_SHIFT + 's', saveas_cb);
+    
+    menubar->add("Edit/Cut",   FL_CTRL + 'x', cut_cb);
+    menubar->add("Edit/Copy",  FL_CTRL + 'c', copy_cb);
+    menubar->add("Edit/Paste", FL_CTRL + 'v', paste_cb);
 
-    // Text editor area
-    Fl_Text_Editor *editor = new Fl_Text_Editor(0, 25, 1000, 650);
+    // Editor Area
+    editor = new Fl_Text_Editor(0, 25, 1000, 650);
     textbuf = new Fl_Text_Buffer;
     editor->buffer(textbuf);
     textbuf->add_modify_callback(changed_cb, nullptr);
 
-    // Status bar
+    // Status Bar
     status_bar = new Fl_Box(0, 675, 1000, 25, "Ready");
     status_bar->box(FL_DOWN_BOX);
     status_bar->labelfont(FL_HELVETICA);
