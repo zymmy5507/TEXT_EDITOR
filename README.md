@@ -33,8 +33,7 @@ A lightweight, cross-platform text editor built with FLTK (Fast Light Toolkit) a
 ![Light Mode Interface](https://raw.githubusercontent.com/zymmy5507/TEXT_EDITOR/main/Screenshot%20From%202025-08-25%2000-52-15.png)
 
 ### Dark Mode
-![Dark Mode Interface](https://raw.githubusercontent.com/zymmy5507/TEXT_EDITOR/main/Screenshot%20From%202025-08-25%2000-52-15.png)
-
+![Dark Mode Interface](https://raw.githubusercontent.com/zymmy5507/TEXT_EDITOR/main/Screenshot%20From%202025-08-25%2000-51-34.png)
 ##  Installation
 
 ### Prerequisites
@@ -112,7 +111,7 @@ g++ -std=c++11 simple_editor.cpp -lfltk -lole32 -luuid -lcomctl32 -o simple_edit
 | Fullscreen | `F11` | Toggle fullscreen mode |
 | Dark Mode | `Ctrl+D` | Toggle dark theme |
 
-## 🏗 Building from Source
+##  Building from Source
 
 ### Standard Build
 ```bash
@@ -231,7 +230,7 @@ copies or substantial portions of the Software.
 
 
 
-**⭐ If you find this project useful, please consider giving it a star on GitHub! ⭐**
+** If you find this project useful, please consider giving it a star on GitHub! ⭐**
 
 ---
 
