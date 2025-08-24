@@ -319,18 +319,21 @@ int main(int argc, char **argv) {
     main_win->begin();
 
     Fl_Menu_Bar *menubar = new Fl_Menu_Bar(0, 0, 1000, 25);
-    menubar->add("File/New", FL_CTRL + 'n', new_cb);
-    menubar->add("File/Open...", FL_CTRL + 'o', open_cb);
-    menubar->add("File/Save", FL_CTRL + 's', save_cb);
-    menubar->add("File/Save As...", FL_CTRL + FL_SHIFT + 's', saveas_cb);
+    menubar->add("File/New", FL_CTRL + 'n', nullptr);
+    menubar->add("File/Open...", FL_CTRL + 'o', nullptr);
+    menubar->add("File/Save", FL_CTRL + 's', nullptr);
+    menubar->add("File/Save As...", FL_CTRL + FL_SHIFT + 's', nullptr);
+    menubar->add("File/Quit", FL_CTRL + 'q', quit_cb);
 
-    menubar->add("Edit/Undo", FL_CTRL + 'z', undo_cb);
-    menubar->add("Edit/Redo", FL_CTRL + 'y', redo_cb);  // Not implemented
-    menubar->add("Edit/Cut", FL_CTRL + 'x', cut_cb);
-    menubar->add("Edit/Copy", FL_CTRL + 'c', copy_cb);
-    menubar->add("Edit/Paste", FL_CTRL + 'v', paste_cb);
-    menubar->add("Edit/Find...", FL_CTRL + 'f', find_cb);
-    menubar->add("Edit/Replace...", FL_CTRL + 'h', replace_cb);
+    menubar->add("Edit/Undo", FL_CTRL + 'z', nullptr);
+    menubar->add("Edit/Redo", FL_CTRL + 'y', nullptr);
+    menubar->add("Edit/Cut", FL_CTRL + 'x', nullptr);
+    menubar->add("Edit/Copy", FL_CTRL + 'c', nullptr);
+    menubar->add("Edit/Paste", FL_CTRL + 'v', nullptr);
+    menubar->add("Edit/Find...", FL_CTRL + 'f', nullptr);
+    menubar->add("Edit/Replace...", FL_CTRL + 'h', nullptr);
+
+    menubar->add("Help/About", 0, about_cb);
 
     editor = new Fl_Text_Editor(0, 25, 1000, 650);
     textbuf = new Fl_Text_Buffer;
@@ -346,8 +349,8 @@ int main(int argc, char **argv) {
     main_win->resizable(editor);
     main_win->end();
     main_win->show(argc, argv);
-    set_title(main_win);
 
+    set_title(main_win);
     return Fl::run();
 }
 
