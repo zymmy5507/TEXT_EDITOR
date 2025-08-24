@@ -27,15 +27,15 @@ A lightweight, cross-platform text editor built with FLTK (Fast Light Toolkit) a
 - **Unicode Support**: Handle text in multiple languages and encodings
 - **Large File Handling**: Efficient processing of large text documents
 
-## 📸 Screenshots
+## Screenshots
 
 ### Light Mode
-![Light Mode Interface](https://raw.githubusercontent.com/zymmy5507/TEXT_EDITOR/main/assets/text-editor-screenshot.png)
+![Light Mode Interface](https://raw.githubusercontent.com/zymmy5507/TEXT_EDITOR/main/Screenshot%20From%202025-08-25%2000-52-15.png)
 
 ### Dark Mode
-![Dark Mode Interface](screenshots/dark_mode.png)
+![Dark Mode Interface](https://raw.githubusercontent.com/zymmy5507/TEXT_EDITOR/main/Screenshot%20From%202025-08-25%2000-52-15.png)
 
-## 🛠️ Installation
+##  Installation
 
 ### Prerequisites
 - C++11 compatible compiler (GCC 4.9+, Clang 3.4+, or MSVC 2015+)
@@ -148,7 +148,7 @@ TEXT_EDITOR/
 └── .gitignore                 # Git ignore rules
 ```
 
-## 🔧 Configuration
+##  Configuration
 
 ### Recent Files
 The editor maintains a list of recently opened files in `recent.txt`. This file is automatically created and updated as you use the application.
